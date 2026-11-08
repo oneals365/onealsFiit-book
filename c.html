@@ -22,6 +22,7 @@ h2{font-size:15px;margin:26px 0 10px;color:var(--muted);font-weight:600}
 .btn{display:flex;align-items:center;gap:12px;width:100%;margin-bottom:10px;padding:15px 16px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
 .btn i{font-style:normal;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:16px}
 .btn.main{background:var(--red);border-color:var(--red)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.two .btn{margin:0}
 .note{color:var(--muted);font-size:13px;margin-top:18px}
 .err{color:var(--muted);text-align:center;padding:40px 0}
 </style>
@@ -71,14 +72,21 @@ const zulu = d => d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDa
 
 const accent = (q.get("c") || "").replace(/^(?!#)/, "#");
 if (/^#[0-9a-fA-F]{6}$/.test(accent)) document.documentElement.style.setProperty("--red", accent);
+const ref = (q.get("r") || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+const replyTo = (q.get("n") || "12462591572").replace(/\D/g, "");
+function replyLink(yes) {
+  const lines = [yes ? "✅ I'll be there" : "❌ Can't make it", title, when + ", " + at, "Ref: " + ref];
+  return "https://wa.me/" + replyTo + "?text=" + encodeURIComponent(lines.join("\n"));
+}
+let when = "", at = "";
 const from = toUtc(start);
 if (!from) {
   document.getElementById("app").innerHTML = '<div class="err">This calendar link is missing the session time.</div>';
 } else {
   const to = new Date(from.getTime() + mins * 60000);
   const details = "Booked with " + (brand || "your coach") + (map ? "\nGoogle Maps: " + map : "") + (waze ? "\nWaze: " + waze : "");
-  const when = from.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", timeZone: tz });
-  const at = from.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit", timeZone: tz });
+  when = from.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", timeZone: tz });
+  at = from.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit", timeZone: tz });
 
   const google = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(title) +
     "&dates=" + zulu(from) + "/" + zulu(to) + "&details=" + encodeURIComponent(details) + "&location=" + encodeURIComponent(place);
@@ -103,9 +111,12 @@ if (!from) {
       '<div class="row"><small>WHEN</small><b>' + esc(when) + ", " + esc(at) + "</b> · " + mins + " min</div>" +
       (place ? '<div class="row"><small>WHERE</small><b>' + (map ? '<a href="' + esc(map) + '">' + esc(place) + "</a>" : esc(place)) + "</b></div>" : "") +
     "</div>" +
+    (ref ? '<h2>Will you be there?</h2><div class="two">' +
+      '<a class="btn main" href="' + esc(replyLink(true)) + '"><i>✅</i>I\'ll be there</a>' +
+      '<a class="btn" href="' + esc(replyLink(false)) + '"><i>❌</i>Can\'t make it</a></div>' : "") +
     "<h2>Add it to your calendar</h2>" +
-    (isApple ? '<a class="btn main" href="' + icsUrl + '" download="session.ics"><i>📅</i>Apple Calendar (iPhone)</a>' : "") +
-    '<a class="btn' + (isApple ? "" : " main") + '" href="' + esc(google) + '" target="_blank" rel="noopener"><i>📆</i>Google Calendar</a>' +
+    (isApple ? '<a class="btn' + (ref ? "" : " main") + '" href="' + icsUrl + '" download="session.ics"><i>📅</i>Apple Calendar (iPhone)</a>' : "") +
+    '<a class="btn' + (isApple || ref ? "" : " main") + '" href="' + esc(google) + '" target="_blank" rel="noopener"><i>📆</i>Google Calendar</a>' +
     '<a class="btn" href="' + esc(outlook("outlook.live.com")) + '" target="_blank" rel="noopener"><i>✉️</i>Outlook / Hotmail</a>' +
     '<a class="btn" href="' + esc(outlook("outlook.office.com")) + '" target="_blank" rel="noopener"><i>💼</i>Outlook (work or school)</a>' +
     (isApple ? "" : '<a class="btn" href="' + icsUrl + '" download="session.ics"><i>📅</i>Apple / other calendar (.ics file)</a>') +
