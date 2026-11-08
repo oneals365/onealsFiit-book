@@ -24,6 +24,7 @@ h2 .n{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#f
 .opt.on{border-color:var(--accent);background:var(--soft);box-shadow:0 0 0 1px var(--accent) inset}
 .opt b{display:block;font-size:17px}
 .opt small{color:var(--muted);display:block;margin-top:2px}
+.opt a{color:var(--accent);font-weight:600}
 .opt .tag{font-size:12px;font-weight:600;color:var(--accent)}
 .days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
 .day{flex:0 0 64px;scroll-snap-align:start;text-align:center;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:8px 0;cursor:pointer;color:inherit;font:inherit}
@@ -64,13 +65,18 @@ footer{color:var(--muted);font-size:12px;text-align:center;margin-top:30px}
     <h2><span class="n">1</span>Session</h2>
     <div class="list" id="sessions"></div>
 
-    <h2><span class="n">2</span>Day</h2>
+    <div id="whereBox" style="display:none">
+      <h2><span class="n">2</span>Where</h2>
+      <div class="list" id="where"></div>
+    </div>
+
+    <h2><span class="n" id="nDay">2</span>Day</h2>
     <div class="days" id="days"></div>
 
-    <h2><span class="n">3</span>Time</h2>
+    <h2><span class="n" id="nTime">3</span>Time</h2>
     <div class="times" id="times"></div>
 
-    <h2><span class="n">4</span>Your details</h2>
+    <h2><span class="n" id="nMe">4</span>Your details</h2>
     <label for="name">Name</label>
     <input id="name" autocomplete="name" placeholder="First and last name">
     <label for="phone">WhatsApp number</label>
@@ -100,12 +106,13 @@ footer{color:var(--muted);font-size:12px;text-align:center;margin-top:30px}
 </div></div>
 
 <script>
-window.BOOKING_CONFIG = {"brand": "ONEALS FIIT", "title": "Book a session", "intro": "Pick a session and a time, then send it to me on WhatsApp. I'll confirm your spot.", "whatsapp": "12462591572", "instagram": "", "location": "", "accent": "#1565C0", "daysAhead": 14, "currency": "$", "sessions": [{"id": "pt", "name": "Personal Training", "business": "ONEALS FIIT", "minutes": 60, "price": 0, "capacity": 1, "days": [1, 2, 3, 4, 5, 6], "times": [300, 360, 420, 960, 1020, 1080], "description": "1-on-1 session, plan built around your goals."}, {"id": "group", "name": "Shredded Academy Group Class", "business": "Shredded Academy", "minutes": 60, "price": 0, "capacity": 12, "days": [1, 3, 5], "times": [330, 1050], "description": "High energy group workout. All levels welcome."}], "full": [], "made": "2026-11-08"};
+window.BOOKING_CONFIG = {"brand": "ONEALS FIIT", "title": "Book a session", "intro": "Pick a session, a place and a time, then send it to me on WhatsApp. I'll confirm your spot.", "whatsapp": "12462591572", "instagram": "", "location": "", "accent": "#E31B23", "daysAhead": 14, "currency": "$", "sessions": [{"id": "pt", "name": "Personal Training", "business": "ONEALS FIIT", "minutes": 60, "price": 0, "capacity": 1, "days": [1, 2, 3, 4, 5, 6], "times": [300, 360, 420, 960, 1020, 1080], "description": "1-on-1 session, plan built around your goals."}, {"id": "group", "name": "Shredded Academy Group Class", "business": "Shredded Academy", "minutes": 60, "price": 0, "capacity": 12, "days": [1, 3, 5], "times": [330, 1050], "description": "High energy group workout. All levels welcome."}], "locations": [{"id": "bl-six-roads", "name": "Beyond Limits - Six Roads", "address": "Six Roads, St. Philip, Barbados", "map": "https://www.google.com/maps/search/?api=1&query=Beyond+Limits+Gym+Six+Roads+Barbados"}, {"id": "bl-wildey", "name": "Beyond Limits - Wildey", "address": "Wildey, St. Michael, Barbados", "map": "https://www.google.com/maps/search/?api=1&query=Beyond+Limits+Gym+Wildey+Barbados"}, {"id": "bl-sheraton", "name": "Beyond Limits - Sheraton", "address": "Sheraton Centre, Christ Church, Barbados", "map": "https://www.google.com/maps/search/?api=1&query=Beyond+Limits+Gym+Sheraton+Barbados"}, {"id": "bl-speightstown", "name": "Beyond Limits - Speightstown", "address": "Speightstown, St. Peter, Barbados", "map": "https://www.google.com/maps/search/?api=1&query=Beyond+Limits+Gym+Speightstown+Barbados"}, {"id": "bl-hastings", "name": "Beyond Limits - Hastings", "address": "Hastings, Christ Church, Barbados", "map": "https://www.google.com/maps/search/?api=1&query=Beyond+Limits+Gym+Hastings+Barbados"}, {"id": "bl-gibbons", "name": "Beyond Limits - Gibbons", "address": "Gibbons, Christ Church, Barbados", "map": "https://www.google.com/maps/search/?api=1&query=Beyond+Limits+Gym+Gibbons+Barbados"}, {"id": "bl-canewood", "name": "Beyond Limits - Canewood", "address": "Canewood, St. Michael, Barbados", "map": "https://www.google.com/maps/search/?api=1&query=Beyond+Limits+Gym+Canewood+Barbados"}, {"id": "other", "name": "Other", "address": "", "map": ""}], "full": [], "made": "2026-11-08"};
 const C = window.BOOKING_CONFIG;
 const $ = id => document.getElementById(id);
 const DAYN = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-let S = { session: null, day: null, time: null };
+let S = { session: null, day: null, time: null, place: null };
+const PLACES = C.locations || [];
 
 const pad = n => String(n).padStart(2, "0");
 const ymd = d => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
@@ -143,6 +150,21 @@ function sessions() {
   if (C.sessions.length === 1 && !S.session) { S.session = C.sessions[0]; }
 }
 
+function places() {
+  if (!PLACES.length) return;
+  $("whereBox").style.display = ""; $("nDay").textContent = "3"; $("nTime").textContent = "4"; $("nMe").textContent = "5";
+  if (PLACES.length === 1) S.place = PLACES[0];
+  const box = $("where"); box.innerHTML = "";
+  PLACES.forEach(l => {
+    const b = document.createElement("button");
+    b.className = "opt" + (S.place && S.place.id === l.id ? " on" : "");
+    b.innerHTML = "<b>📍 " + esc(l.name || l.address) + "</b>" + (l.address && l.name ? "<small>" + esc(l.address) + "</small>" : "") +
+      (l.map ? '<small><a href="' + esc(l.map) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Open in Maps</a></small>' : "<small>Tell me where in the notes below</small>");
+    b.onclick = () => { S.place = l; render(); };
+    box.appendChild(b);
+  });
+}
+
 function openDays(s) {
   const out = [], now = new Date(), start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   for (let i = 0; i < (C.daysAhead || 14); i++) {
@@ -160,6 +182,7 @@ function times(s, d) {
 
 function render() {
   sessions();
+  places();
   const days = $("days"), tbox = $("times");
   days.innerHTML = ""; tbox.innerHTML = "";
   if (!S.session) { days.innerHTML = '<div class="empty">Pick a session first.</div>'; }
@@ -184,8 +207,9 @@ function render() {
       tbox.appendChild(b);
     });
   }
-  const ready = S.session && S.day && S.time != null;
-  $("sum").textContent = ready ? S.session.name + " · " + longDay(S.day) + " · " + tl(S.time) : "Pick a session, day and time.";
+  const ready = S.session && S.day && S.time != null && (!PLACES.length || S.place);
+  $("sum").textContent = ready ? S.session.name + " · " + longDay(S.day) + " · " + tl(S.time) + (S.place ? " · " + (S.place.name || S.place.address) : "")
+    : (PLACES.length ? "Pick a session, place, day and time." : "Pick a session, day and time.");
   $("go").disabled = !ready;
 }
 
@@ -203,6 +227,7 @@ function send() {
     "Session: " + S.session.name + " (" + S.session.minutes + " min)",
     "Date: " + longDay(S.day) + " (" + ymd(S.day) + ")",
     "Time: " + tl(S.time),
+    ...(S.place ? ["Location: " + (S.place.name || S.place.address)] : []),
     "Name: " + name,
     "Phone: " + phone,
   ];
@@ -214,7 +239,7 @@ function send() {
   location.href = url;
 }
 
-function again() { S = { session: C.sessions.length === 1 ? C.sessions[0] : null, day: null, time: null }; $("form").style.display = ""; $("bar").style.display = ""; $("done").style.display = "none"; render(); }
+function again() { S = { session: C.sessions.length === 1 ? C.sessions[0] : null, day: null, time: null, place: null }; $("form").style.display = ""; $("bar").style.display = ""; $("done").style.display = "none"; render(); }
 
 (function init() {
   header();
