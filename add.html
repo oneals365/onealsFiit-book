@@ -50,6 +50,8 @@ function toUtc(stamp) {
 }
 const zulu = d => d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) + "T" + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + "00Z";
 
+const accent = q.get("c") || "";
+if (/^#[0-9a-fA-F]{6}$/.test(accent)) document.documentElement.style.setProperty("--red", accent);
 const from = toUtc(start);
 if (!from) {
   document.getElementById("app").innerHTML = '<div class="err">This calendar link is missing the session time.</div>';
