@@ -31,7 +31,7 @@ h2{font-size:15px;margin:26px 0 10px;color:var(--muted);font-weight:600}
 <script>
 const q = new URLSearchParams(location.search);
 const title = q.get("t") || "Training session", start = q.get("s") || "", mins = parseInt(q.get("d") || "60", 10);
-const place = q.get("l") || "", map = q.get("m") || "", tz = q.get("z") || "America/Barbados", brand = q.get("b") || "";
+const place = q.get("l") || "", map = q.get("m") || "", waze = q.get("w") || "", tz = q.get("z") || "America/Barbados", brand = q.get("b") || "";
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const pad = n => String(n).padStart(2, "0");
 
@@ -55,7 +55,7 @@ if (!from) {
   document.getElementById("app").innerHTML = '<div class="err">This calendar link is missing the session time.</div>';
 } else {
   const to = new Date(from.getTime() + mins * 60000);
-  const details = "Booked with " + (brand || "your coach") + (map ? "\nMap: " + map : "");
+  const details = "Booked with " + (brand || "your coach") + (map ? "\nGoogle Maps: " + map : "") + (waze ? "\nWaze: " + waze : "");
   const when = from.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", timeZone: tz });
   const at = from.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit", timeZone: tz });
 
@@ -88,7 +88,9 @@ if (!from) {
     '<a class="btn" href="' + esc(outlook("outlook.live.com")) + '" target="_blank" rel="noopener"><i>✉️</i>Outlook / Hotmail</a>' +
     '<a class="btn" href="' + esc(outlook("outlook.office.com")) + '" target="_blank" rel="noopener"><i>💼</i>Outlook (work or school)</a>' +
     (isApple ? "" : '<a class="btn" href="' + icsUrl + '" download="session.ics"><i>📅</i>Apple / other calendar (.ics file)</a>') +
-    (map ? '<a class="btn" href="' + esc(map) + '" target="_blank" rel="noopener"><i>📍</i>Directions</a>' : "") +
+    (map || waze ? "<h2>Directions</h2>" : "") +
+    (map ? '<a class="btn" href="' + esc(map) + '" target="_blank" rel="noopener"><i>📍</i>Google Maps</a>' : "") +
+    (waze ? '<a class="btn" href="' + esc(waze) + '" target="_blank" rel="noopener"><i>🚗</i>Waze</a>' : "") +
     '<p class="note">The calendar entry reminds you an hour before. If anything changes, message me on WhatsApp.</p>';
 }
 </script>
