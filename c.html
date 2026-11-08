@@ -74,6 +74,11 @@ const accent = (q.get("c") || "").replace(/^(?!#)/, "#");
 if (/^#[0-9a-fA-F]{6}$/.test(accent)) document.documentElement.style.setProperty("--red", accent);
 const ref = (q.get("r") || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
 const replyTo = (q.get("n") || "12462591572").replace(/\D/g, "");
+const askPay = q.get("y") === "1";
+function paidLink(method) {
+  const lines = ["💳 I've paid by " + method, title, when + ", " + at, "Ref: " + ref];
+  return "https://wa.me/" + replyTo + "?text=" + encodeURIComponent(lines.join("\n"));
+}
 function replyLink(yes) {
   const lines = [yes ? "✅ I'll be there" : "❌ Can't make it", title, when + ", " + at, "Ref: " + ref];
   return "https://wa.me/" + replyTo + "?text=" + encodeURIComponent(lines.join("\n"));
@@ -114,6 +119,9 @@ if (!from) {
     (ref ? '<h2>Will you be there?</h2><div class="two">' +
       '<a class="btn main" href="' + esc(replyLink(true)) + '"><i>✅</i>I\'ll be there</a>' +
       '<a class="btn" href="' + esc(replyLink(false)) + '"><i>❌</i>Can\'t make it</a></div>' : "") +
+    (ref && askPay ? '<h2>Paid already?</h2><p class="note" style="margin:0 0 10px">The payment details are in the WhatsApp message. Use ' + esc(ref) + ' as the reference, then tap how you paid.</p><div class="two">' +
+      '<a class="btn" href="' + esc(paidLink("1st Pay")) + '"><i>💳</i>Paid by 1st Pay</a>' +
+      '<a class="btn" href="' + esc(paidLink("transfer")) + '"><i>🏦</i>Paid by transfer</a></div>' : "") +
     "<h2>Add it to your calendar</h2>" +
     (isApple ? '<a class="btn' + (ref ? "" : " main") + '" href="' + icsUrl + '" download="session.ics"><i>📅</i>Apple Calendar (iPhone)</a>' : "") +
     '<a class="btn' + (isApple || ref ? "" : " main") + '" href="' + esc(google) + '" target="_blank" rel="noopener"><i>📆</i>Google Calendar</a>' +
