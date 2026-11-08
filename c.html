@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Add to calendar</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--red:#E31B23;--bg:#0b0b0f;--card:#17171d;--ink:#f3f3f5;--muted:#a3a3ad;--line:#2a2a33}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:520px;margin:0 auto;padding:28px 16px 40px}
+.brand{font-size:13px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--red)}
+h1{font-size:34px;line-height:1.05;margin:8px 0 18px;font-style:italic;font-weight:900;letter-spacing:-.01em}
+h1 span{color:var(--red)}
+.card{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--red);border-radius:18px;padding:6px 18px}
+.row{padding:12px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}
+.row small{display:block;font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--red)}
+.row b{font-size:19px}
+.row a{color:var(--ink)}
+h2{font-size:15px;margin:26px 0 10px;color:var(--muted);font-weight:600}
+.btn{display:flex;align-items:center;gap:12px;width:100%;margin-bottom:10px;padding:15px 16px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+.btn i{font-style:normal;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:16px}
+.btn.main{background:var(--red);border-color:var(--red)}
+.note{color:var(--muted);font-size:13px;margin-top:18px}
+.err{color:var(--muted);text-align:center;padding:40px 0}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+const q = new URLSearchParams(location.search);
+// Short links: c?e=2611100600&p=wildey&t=Personal+Training (d, b, m, c, z only when not the usual).
+const PLACES = {
+  "six-roads": ["Beyond Limits - Six Roads", "Six Roads, St. Philip, Barbados"],
+  "wildey": ["Beyond Limits - Wildey", "Wildey, St. Michael, Barbados"],
+  "sheraton": ["Beyond Limits - Sheraton", "Sheraton Centre, Christ Church, Barbados"],
+  "speightstown": ["Beyond Limits - Speightstown", "Speightstown, St. Peter, Barbados"],
+  "hastings": ["Beyond Limits - Hastings", "Hastings, Christ Church, Barbados"],
+  "gibbons": ["Beyond Limits - Gibbons", "Gibbons, Christ Church, Barbados"],
+  "canewood": ["Beyond Limits - Canewood", "Canewood, St. Michael, Barbados"],
+};
+const brand = q.get("b") || "ONEALS FIIT";
+const title = (q.get("t") || "Training session") + " · " + brand;
+const e = q.get("e") || "";
+const start = /^\d{10}$/.test(e) ? "20" + e.slice(0, 6) + "T" + e.slice(6) : "";
+const mins = parseInt(q.get("d") || "60", 10), tz = q.get("z") || "America/Barbados";
+const slug = q.get("p") || "", known = PLACES[slug];
+const placeName = known ? known[0] : (q.get("l") || "");
+const place = known ? known[0] + ", " + known[1] : placeName;
+const search = known ? "Beyond Limits Gym " + known[0].replace("Beyond Limits - ", "") + " Barbados" : place;
+const map = q.get("m") || (place ? "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(search) : "");
+const waze = place ? "https://waze.com/ul?q=" + encodeURIComponent(place.replace(" - ", " ")) + "&navigate=yes" : "";
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const pad = n => String(n).padStart(2, "0");
+
+// "20261110T0600" in the trainer's time zone -> a real moment in time.
+function toUtc(stamp) {
+  const m = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})$/.exec(stamp);
+  if (!m) return null;
+  const guess = Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]);
+  let offset = 0;
+  try {
+    const parts = Object.fromEntries(new Intl.DateTimeFormat("en-US", { timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" })
+      .formatToParts(new Date(guess)).map(p => [p.type, p.value]));
+    offset = Date.UTC(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute) - guess;
+  } catch (e) {}
+  return new Date(guess - offset);
+}
+const zulu = d => d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) + "T" + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + "00Z";
+
+const accent = (q.get("c") || "").replace(/^(?!#)/, "#");
+if (/^#[0-9a-fA-F]{6}$/.test(accent)) document.documentElement.style.setProperty("--red", accent);
+const from = toUtc(start);
+if (!from) {
+  document.getElementById("app").innerHTML = '<div class="err">This calendar link is missing the session time.</div>';
+} else {
+  const to = new Date(from.getTime() + mins * 60000);
+  const details = "Booked with " + (brand || "your coach") + (map ? "\nGoogle Maps: " + map : "") + (waze ? "\nWaze: " + waze : "");
+  const when = from.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", timeZone: tz });
+  const at = from.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit", timeZone: tz });
+
+  const google = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(title) +
+    "&dates=" + zulu(from) + "/" + zulu(to) + "&details=" + encodeURIComponent(details) + "&location=" + encodeURIComponent(place);
+  const outlook = (host) => "https://" + host + "/calendar/0/deeplink/compose?path=%2Fcalendar%2Faction%2Fcompose&rru=addevent&subject=" + encodeURIComponent(title) +
+    "&startdt=" + from.toISOString() + "&enddt=" + to.toISOString() + "&body=" + encodeURIComponent(details) + "&location=" + encodeURIComponent(place);
+  const icsText = (s) => s.replace(/\\/g, "\\\\").replace(/\n/g, "\\n").replace(/,/g, "\\,").replace(/;/g, "\\;");
+  const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//ONEALS FIIT//Booking//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "BEGIN:VEVENT",
+    "UID:" + start + "-" + Math.random().toString(36).slice(2) + "@onealsfiit", "DTSTAMP:" + zulu(new Date()),
+    "DTSTART:" + zulu(from), "DTEND:" + zulu(to), "SUMMARY:" + icsText(title), "DESCRIPTION:" + icsText(details),
+    "LOCATION:" + icsText(place), ...(map ? ["URL:" + map] : []),
+    "BEGIN:VALARM", "TRIGGER:-PT1H", "ACTION:DISPLAY", "DESCRIPTION:" + icsText(title), "END:VALARM",
+    "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+  const icsUrl = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics);
+  const isApple = /iPhone|iPad|Macintosh/.test(navigator.userAgent);
+
+  document.title = "Add to calendar · " + (brand || title);
+  document.getElementById("app").innerHTML =
+    (brand ? '<div class="brand">' + esc(brand) + "</div>" : "") +
+    "<h1>YOU'RE <span>BOOKED</span></h1>" +
+    '<div class="card">' +
+      '<div class="row"><small>SESSION</small><b>' + esc(title) + "</b></div>" +
+      '<div class="row"><small>WHEN</small><b>' + esc(when) + ", " + esc(at) + "</b> · " + mins + " min</div>" +
+      (place ? '<div class="row"><small>WHERE</small><b>' + (map ? '<a href="' + esc(map) + '">' + esc(place) + "</a>" : esc(place)) + "</b></div>" : "") +
+    "</div>" +
+    "<h2>Add it to your calendar</h2>" +
+    (isApple ? '<a class="btn main" href="' + icsUrl + '" download="session.ics"><i>📅</i>Apple Calendar (iPhone)</a>' : "") +
+    '<a class="btn' + (isApple ? "" : " main") + '" href="' + esc(google) + '" target="_blank" rel="noopener"><i>📆</i>Google Calendar</a>' +
+    '<a class="btn" href="' + esc(outlook("outlook.live.com")) + '" target="_blank" rel="noopener"><i>✉️</i>Outlook / Hotmail</a>' +
+    '<a class="btn" href="' + esc(outlook("outlook.office.com")) + '" target="_blank" rel="noopener"><i>💼</i>Outlook (work or school)</a>' +
+    (isApple ? "" : '<a class="btn" href="' + icsUrl + '" download="session.ics"><i>📅</i>Apple / other calendar (.ics file)</a>') +
+    (map || waze ? "<h2>Directions</h2>" : "") +
+    (map ? '<a class="btn" href="' + esc(map) + '" target="_blank" rel="noopener"><i>📍</i>Google Maps</a>' : "") +
+    (waze ? '<a class="btn" href="' + esc(waze) + '" target="_blank" rel="noopener"><i>🚗</i>Waze</a>' : "") +
+    '<p class="note">The calendar entry reminds you an hour before. If anything changes, message me on WhatsApp.</p>';
+}
+</script>
+</body>
+</html>
