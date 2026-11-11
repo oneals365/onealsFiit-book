@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ONEALS FIIT</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Personal training and group classes at Beyond Limits gyms across Barbados. Shredded Academy and 365 Detox by Oneal. Book online, confirm on WhatsApp.">
+<meta property="og:title" content="ONEALS FIIT · Personal training in Barbados">
+<meta property="og:description" content="Personal training, Shredded Academy group classes and 365 Detox by Oneal. Book in a minute, confirm on WhatsApp.">
+<meta property="og:image" content="img/best-shape-at-40.jpg">
+<meta name="theme-color" content="#0B0B0C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:ital,wght@0,600;0,700;1,700;1,800&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: gym-poster pages. Dark ground, slanted red bands like the logo underline, one yellow call to action. */
+:root{
+  --ground:#0B0B0C; --panel:#151517; --line:#2A2A2E;
+  --ink:#F4F4F2; --muted:#A9A9AE;
+  --red:#E31B23; --red-ink:#FF4A50; --yellow:#FFD200; --whatsapp:#25D366;
+  --detox:#1E88E5;
+  --display:'Anton','Impact','Arial Narrow Bold',sans-serif;
+  --cond:'Barlow Condensed','Arial Narrow',system-ui,sans-serif;
+  --body:'Barlow',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --wrap:1120px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 17px/1.55 var(--body);overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-transform:uppercase;letter-spacing:.01em;line-height:1;margin:0;text-wrap:balance}
+.eyebrow{font:italic 800 18px/1 var(--cond);letter-spacing:.14em;text-transform:uppercase;color:var(--red-ink);margin:0 0 14px}
+.lead{color:var(--muted);font-size:19px;max-width:46ch;margin:16px 0 0}
+section{padding-block:88px}
+
+/* Buttons */
+.btns{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font:400 22px/1 var(--display);letter-spacing:.04em;text-transform:uppercase;padding:16px 26px 15px;transform:skewX(-10deg);transition:transform .15s ease,filter .15s ease}
+.btn>span{display:inline-flex;align-items:center;gap:10px;transform:skewX(10deg)}
+.btn:hover{transform:skewX(-10deg) translateY(-2px);filter:brightness(1.08)}
+.btn-yellow{background:var(--yellow);color:#000}
+.btn-wa{background:var(--whatsapp);color:#062b14}
+.btn-line{border:2px solid var(--red);color:var(--ink);padding:14px 24px 13px}
+.btn svg{width:20px;height:20px;flex:none}
+
+/* Header */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:rgba(11,11,12,.92)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:rgba(11,11,12,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+header .logo img{height:28px;width:auto}
+nav{display:flex;align-items:center;gap:26px}
+nav a{font:700 17px/1 var(--cond);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+nav a:hover{color:var(--ink)}
+nav .book{color:#000;background:var(--yellow);padding:10px 16px 9px;transform:skewX(-10deg)}
+nav .book span{display:inline-block;transform:skewX(10deg)}
+@media (max-width:820px){nav a:not(.book){display:none}}
+
+/* Hero */
+.hero{position:relative;padding-block:80px 96px;overflow:hidden;border-bottom:1px solid var(--line)}
+.hero::before{content:"";position:absolute;left:63%;right:-20%;top:-30%;height:160%;background:linear-gradient(180deg,#1c0b0c,#120708);transform:skewX(-9deg);border-left:10px solid var(--red)}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(54px,9vw,112px);line-height:.92}
+.hero h1 .r{color:var(--red)}
+.hero h1 .slash{display:block;width:min(420px,70%);height:10px;background:var(--red);transform:skewX(-40deg);margin:18px 0 0}
+.facts{display:flex;flex-wrap:wrap;gap:10px 22px;margin:28px 0 0;padding:0;list-style:none;font:700 17px/1.2 var(--cond);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.facts li{display:flex;align-items:center;gap:10px}
+.facts li::before{content:"";width:12px;height:12px;background:var(--red);transform:skewX(-14deg)}
+.brands{display:grid;gap:28px;justify-items:center;text-align:center;padding-left:48px}
+.brands img.of{width:min(360px,100%)}
+.brands img.sa{width:min(380px,100%)}
+.brands p{margin:0;font:italic 700 20px/1.25 var(--cond);color:var(--muted);max-width:30ch}
+@media (max-width:860px){
+  .hero .wrap{grid-template-columns:1fr}
+  .hero::before{display:none}
+  .brands{justify-items:start;text-align:left;padding-left:0}
+}
+
+/* Training */
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:40px}
+.card{background:var(--panel);border:1px solid var(--line);padding:28px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.card .tag{font:700 15px/1 var(--cond);letter-spacing:.1em;text-transform:uppercase;color:var(--red-ink)}
+.card h3{font-size:38px}
+.card p{margin:0;color:var(--muted)}
+.card dl{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:4px 0 0;font-size:16px}
+.card dt{font:700 15px/1.5 var(--cond);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.card dd{margin:0}
+.card .btns{margin-top:auto;padding-top:10px}
+@media (max-width:760px){.cards{grid-template-columns:1fr}}
+
+/* Shredded Academy */
+.academy{background:linear-gradient(180deg,#0B0B0C 0,#111 100%);border-block:1px solid var(--line)}
+.academy .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:center}
+.academy figure{margin:0;position:relative}
+.academy figure img{width:100%;box-shadow:0 30px 80px rgba(0,0,0,.6);border:1px solid var(--line)}
+.academy figure::after{content:"";position:absolute;left:-14px;bottom:-14px;width:46%;height:12px;background:var(--red);transform:skewX(-40deg)}
+.academy h2{font-size:clamp(44px,6vw,76px)}
+.academy h2 em{font-style:normal;background:var(--yellow);color:#000;padding:0 .12em;display:inline-block;transform:skewX(-8deg)}
+.quote{font:italic 800 clamp(24px,3vw,32px)/1.15 var(--cond);margin:22px 0 0}
+.quote b{color:var(--red-ink)}
+.ticks{list-style:none;margin:26px 0 0;padding:0;display:grid;gap:14px}
+.ticks li{display:flex;align-items:center;gap:14px;font:italic 700 22px/1.2 var(--cond)}
+.ticks li::before{content:"";flex:none;width:22px;height:22px;background:var(--red) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat;transform:skewX(-10deg)}
+@media (max-width:860px){.academy .wrap{grid-template-columns:1fr}.academy figure{max-width:480px}}
+
+/* Steps */
+.steps{list-style:none;margin:40px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;counter-reset:s}
+.steps li{counter-increment:s;border-top:4px solid var(--red);padding-top:18px;min-width:0}
+.steps li::before{content:counter(s);display:block;font:400 64px/1 var(--display);color:var(--red);margin-bottom:10px}
+.steps h3{font-size:28px}
+.steps p{margin:10px 0 0;color:var(--muted)}
+.pay{margin-top:36px;padding:18px 22px;background:var(--panel);border:1px solid var(--line);color:var(--muted)}
+.pay b{color:var(--ink)}
+@media (max-width:760px){.steps{grid-template-columns:1fr}}
+
+/* Locations */
+.locs{list-style:none;margin:36px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.locs li{background:var(--ground);padding:20px 22px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.locs b{font:400 24px/1.05 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.locs span{color:var(--muted);font-size:15px}
+.locs .go{display:flex;gap:16px;margin-top:6px;font:700 16px/1 var(--cond);letter-spacing:.08em;text-transform:uppercase}
+.locs .go a{text-decoration:none;color:var(--red-ink)}
+.locs .go a:hover{text-decoration:underline}
+.locs li.more{background:#140809;justify-content:center}
+.locs li.more p{margin:0;color:var(--muted)}
+
+/* Detox */
+.detox{background:radial-gradient(120% 140% at 85% 20%,#0c2a4a 0,#0a1624 45%,#0B0B0C 80%);border-block:1px solid #16314f}
+.detox .wrap{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center}
+.detox img{width:220px;height:auto}
+.detox .eyebrow{color:#6DB6FF}
+.detox h2{font-size:clamp(40px,5.4vw,68px)}
+.detox ul{margin:22px 0 0;padding:0;list-style:none;display:grid;gap:10px;color:#cfe3f7}
+.detox li{display:flex;gap:12px;align-items:baseline}
+.detox li::before{content:"";flex:none;width:10px;height:10px;border-radius:50%;background:#6DB6FF;transform:translateY(-1px)}
+@media (max-width:760px){.detox .wrap{grid-template-columns:1fr}.detox img{width:150px}}
+
+/* Contact */
+.contact h2{font-size:clamp(44px,7vw,92px)}
+.contact h2 .r{color:var(--red)}
+.num{font:400 clamp(30px,4.5vw,44px)/1 var(--display);letter-spacing:.03em;margin:24px 0 0;user-select:all}
+.num small{display:block;font:700 15px/1.4 var(--cond);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;user-select:none}
+footer{border-top:1px solid var(--line);padding-block:30px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px}
+footer .motto{font:italic 800 17px/1 var(--cond);letter-spacing:.16em;color:var(--ink)}
+footer .motto b{color:var(--red)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="ONEALS FIIT home"><img src="img/oneals-fiit.png" alt="ONEALS FIIT" width="560" height="113"></a>
+    <nav aria-label="Sections">
+      <a href="#training">Training</a>
+      <a href="#academy">Shredded Academy</a>
+      <a href="#locations">Gyms</a>
+      <a href="#detox">Detox</a>
+      <a class="book" href="https://oneals365.github.io/onealsFiit-book/"><span>Book</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Personal training · Barbados</p>
+      <h1>Train smart.<br>Train hard.<br>Train <span class="r">FIIT.</span><span class="slash" aria-hidden="true"></span></h1>
+      <p class="lead">One-on-one coaching and high-energy group classes at Beyond Limits gyms around the island. Pick a time online and confirm it with me on WhatsApp.</p>
+      <div class="btns">
+        <a class="btn btn-yellow" href="https://oneals365.github.io/onealsFiit-book/"><span>Book a session</span></a>
+        <a class="btn btn-wa" href="https://wa.me/12462591572?text=Hi%20Oneal%2C%20I%27d%20like%20to%20know%20more%20about%20training."><span><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.4-.3Z"/></svg>WhatsApp me</span></a>
+      </div>
+      <ul class="facts">
+        <li>7 Beyond Limits gyms</li>
+        <li>60-minute sessions</li>
+        <li>Mornings from 5 am</li>
+      </ul>
+    </div>
+    <div class="brands">
+      <img class="sa" src="img/shredded-academy.png" alt="Shredded Academy" width="640" height="134">
+      <p>Personal training by ONEALS FIIT. Group classes by Shredded Academy.</p>
+    </div>
+  </div>
+</section>
+
+<section id="training">
+  <div class="wrap">
+    <p class="eyebrow">Training</p>
+    <h2 style="font-size:clamp(44px,6vw,72px)">Two ways to train</h2>
+    <p class="lead">Every session is an hour. Book the one that suits you, or message me if you're not sure where to start.</p>
+    <div class="cards">
+      <article class="card">
+        <span class="tag">ONEALS FIIT</span>
+        <h3>Personal Training</h3>
+        <p>A 1-on-1 session with a plan built around your goals, whether that's losing fat, building strength or getting back into shape.</p>
+        <dl>
+          <dt>Length</dt><dd>60 minutes</dd>
+          <dt>Days</dt><dd>Monday to Saturday</dd>
+          <dt>Times</dt><dd>5, 6 and 7 am · 4, 5 and 6 pm</dd>
+        </dl>
+        <div class="btns"><a class="btn btn-yellow" href="https://oneals365.github.io/onealsFiit-book/?s=pt"><span>Book personal training</span></a></div>
+      </article>
+      <article class="card">
+        <span class="tag">Shredded Academy</span>
+        <h3>Group Class</h3>
+        <p>A high-energy group workout. All levels welcome, so bring a friend and push each other.</p>
+        <dl>
+          <dt>Length</dt><dd>60 minutes</dd>
+          <dt>Days</dt><dd>Monday, Wednesday, Friday</dd>
+          <dt>Times</dt><dd>5:30 am · 5:30 pm</dd>
+          <dt>Class size</dt><dd>Up to 12 people</dd>
+        </dl>
+        <div class="btns"><a class="btn btn-yellow" href="https://oneals365.github.io/onealsFiit-book/?s=group"><span>Book a group class</span></a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="academy" id="academy">
+  <div class="wrap">
+    <figure><img src="img/best-shape-at-40.jpg" alt="Shredded Academy flyer: In your best shape at 40" width="800" height="1000" loading="lazy"></figure>
+    <div>
+      <p class="eyebrow">Shredded Academy programme</p>
+      <h2>In your <em>best shape</em> at 40</h2>
+      <p class="quote">Age is not your limit. <b>Your habits are.</b></p>
+      <ul class="ticks">
+        <li>Personal training plan</li>
+        <li>Structured meal plan</li>
+        <li>Strength and toning workouts</li>
+        <li>Body composition tracking</li>
+        <li>Weekly coaching and check-ins</li>
+      </ul>
+      <p class="lead">40 is not the end of fitness. It's a new beginning.</p>
+      <div class="btns">
+        <a class="btn btn-yellow" href="https://oneals365.github.io/onealsFiit-book/"><span>Sign up today</span></a>
+        <a class="btn btn-line" href="https://wa.me/12462591572?text=Hi%20Oneal%2C%20tell%20me%20about%20the%20Best%20Shape%20at%2040%20programme."><span>Ask about it</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <p class="eyebrow">Booking</p>
+    <h2 style="font-size:clamp(44px,6vw,72px)">Booked in a minute</h2>
+    <ol class="steps">
+      <li><h3>Pick a session</h3><p>Choose personal training or a group class, the gym, the day and the time on the booking page.</p></li>
+      <li><h3>Send it on WhatsApp</h3><p>Your booking opens in WhatsApp, ready to send. No account or app needed.</p></li>
+      <li><h3>Show up and train</h3><p>I confirm your spot and send you the details with a calendar link and directions.</p></li>
+    </ol>
+    <p class="pay">Pay by <b>1st Pay</b> or <b>bank transfer</b>. Payment details come with your confirmation. Session packs are available for regular clients.</p>
+    <div class="btns"><a class="btn btn-yellow" href="https://oneals365.github.io/onealsFiit-book/"><span>Open the booking page</span></a></div>
+  </div>
+</section>
+
+<section id="locations" style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow">Where we train</p>
+    <h2 style="font-size:clamp(44px,6vw,72px)">Beyond Limits gyms</h2>
+    <ul class="locs">
+      <li><b>Six Roads</b><span>St. Philip</span><div class="go"><a href="https://www.google.com/maps/search/?api=1&amp;query=Beyond+Limits+Gym+Six+Roads+Barbados" target="_blank" rel="noopener">Maps</a><a href="https://waze.com/ul?q=Beyond+Limits+Six+Roads%2C+Six+Roads%2C+St.+Philip%2C+Barbados&amp;navigate=yes" target="_blank" rel="noopener">Waze</a></div></li>
+      <li><b>Wildey</b><span>St. Michael</span><div class="go"><a href="https://www.google.com/maps/search/?api=1&amp;query=Beyond+Limits+Gym+Wildey+Barbados" target="_blank" rel="noopener">Maps</a><a href="https://waze.com/ul?q=Beyond+Limits+Wildey%2C+Wildey%2C+St.+Michael%2C+Barbados&amp;navigate=yes" target="_blank" rel="noopener">Waze</a></div></li>
+      <li><b>Sheraton</b><span>Sheraton Centre, Christ Church</span><div class="go"><a href="https://www.google.com/maps/search/?api=1&amp;query=Beyond+Limits+Gym+Sheraton+Barbados" target="_blank" rel="noopener">Maps</a><a href="https://waze.com/ul?q=Beyond+Limits+Sheraton%2C+Sheraton+Centre%2C+Christ+Church%2C+Barbados&amp;navigate=yes" target="_blank" rel="noopener">Waze</a></div></li>
+      <li><b>Speightstown</b><span>St. Peter</span><div class="go"><a href="https://www.google.com/maps/search/?api=1&amp;query=Beyond+Limits+Gym+Speightstown+Barbados" target="_blank" rel="noopener">Maps</a><a href="https://waze.com/ul?q=Beyond+Limits+Speightstown%2C+Speightstown%2C+St.+Peter%2C+Barbados&amp;navigate=yes" target="_blank" rel="noopener">Waze</a></div></li>
+      <li><b>Hastings</b><span>Christ Church</span><div class="go"><a href="https://www.google.com/maps/search/?api=1&amp;query=Beyond+Limits+Gym+Hastings+Barbados" target="_blank" rel="noopener">Maps</a><a href="https://waze.com/ul?q=Beyond+Limits+Hastings%2C+Hastings%2C+Christ+Church%2C+Barbados&amp;navigate=yes" target="_blank" rel="noopener">Waze</a></div></li>
+      <li><b>Gibbons</b><span>Christ Church</span><div class="go"><a href="https://www.google.com/maps/search/?api=1&amp;query=Beyond+Limits+Gym+Gibbons+Barbados" target="_blank" rel="noopener">Maps</a><a href="https://waze.com/ul?q=Beyond+Limits+Gibbons%2C+Gibbons%2C+Christ+Church%2C+Barbados&amp;navigate=yes" target="_blank" rel="noopener">Waze</a></div></li>
+      <li><b>Canewood</b><span>St. Michael</span><div class="go"><a href="https://www.google.com/maps/search/?api=1&amp;query=Beyond+Limits+Gym+Canewood+Barbados" target="_blank" rel="noopener">Maps</a><a href="https://waze.com/ul?q=Beyond+Limits+Canewood%2C+Canewood%2C+St.+Michael%2C+Barbados&amp;navigate=yes" target="_blank" rel="noopener">Waze</a></div></li>
+      <li class="more"><p>Somewhere else in mind? Add it in the notes when you book and we'll sort it out.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="detox" id="detox">
+  <div class="wrap">
+    <img src="img/detox.png" alt="365 Detox by Oneal" width="320" height="311">
+    <div>
+      <p class="eyebrow">365 Detox by Oneal</p>
+      <h2>Detox, delivered</h2>
+      <p class="lead" style="color:#cfe3f7">Support your training with 365 Detox. Order on WhatsApp and I'll bring it to you.</p>
+      <ul>
+        <li>Message your order on WhatsApp</li>
+        <li>Delivered to your door</li>
+        <li>Ask for this week's menu and prices</li>
+      </ul>
+      <div class="btns"><a class="btn btn-wa" href="https://wa.me/12462591572?text=Hi%2C%20I%27d%20like%20to%20order%20from%20365%20Detox.%20What%27s%20on%20the%20menu%3F"><span>Order on WhatsApp</span></a></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <p class="eyebrow">Get started</p>
+    <h2>Your first session<br>starts with <span class="r">one message.</span></h2>
+    <p class="num"><small>WhatsApp</small>+1 246 259 1572</p>
+    <div class="btns">
+      <a class="btn btn-yellow" href="https://oneals365.github.io/onealsFiit-book/"><span>Book a session</span></a>
+      <a class="btn btn-wa" href="https://wa.me/12462591572"><span>Chat on WhatsApp</span></a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="motto">TRAIN SMART · TRAIN HARD · TRAIN <b>FIIT</b></span>
+    <span>ONEALS FIIT · Shredded Academy · 365 Detox by Oneal · Barbados</span>
+  </div>
+</footer>
+
+</body>
+</html>
